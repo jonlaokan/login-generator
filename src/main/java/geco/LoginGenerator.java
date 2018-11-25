@@ -36,7 +36,8 @@ public class LoginGenerator {
      */
     public String generateLoginForNomAndPrenom(String nom, String prenom) {
         String p = deAccent(prenom.substring(0,1).toUpperCase());
-        String n = deAccent(nom.substring(0,3).toUpperCase());
+        String n = suffixFromName(nom);
+
         String naked_login = p+n ;
         String loginSuff = naked_login;
 
@@ -48,6 +49,29 @@ public class LoginGenerator {
         }
         loginService.addLogin(loginSuff);
         return loginSuff;
+    }
+
+    /**
+     * Return correct suffix even if the user name is shorter than 3
+     * @param name The user name
+     * @return The correct suffix
+     */
+    private String suffixFromName(String name) {
+        String n;
+
+        switch (name.length()) {
+            case 1:
+                n = name.substring(0,1).toUpperCase();
+                break;
+            case 2:
+                n = name.substring(0,2).toUpperCase();
+                break;
+            default:
+                n = name.substring(0,3).toUpperCase();
+                break;
+        }
+
+        return deAccent(n);
     }
 
     /**
